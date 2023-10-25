@@ -5,6 +5,13 @@ name = "pip_conf_index_global"
 
 [packages]
 fastapi = "*"
+gunicorn = "*"
+requests = "*"
+uvicorn = "*"
+pillow = "*"
+python-multipart = "*"
+aiofiles = "*"
+uuid = "*"
 
 [dev-packages]
 
