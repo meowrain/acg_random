@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Blog</title>
+    <!-- <link rel="stylesheet" href="./styles/pico.min.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.10/css/pico.min.css">
+    <script>
+        function loadContent(url) {
+            var newWindow = window.open("/posts/?url=" + encodeURIComponent(url), "_blank");
+        }
+    </script>
+</head>
+
+<body>
+
+    <main class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><strong>Blog With Python✨</strong></li>
+                </ul>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Link</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="">
+            <div>
+                <h1>Markdown Files:</h1>
+                {% for title,link in content.items() %}
+                <a href="#" onclick="loadContent('/static/{{ link }}.html'); return false;">- {{title}}</a><br>
+                {% endfor %}
+            </div>
+        </div>
+        <br>
+        <footer>
+            <section>
+               <span> <progress value="25" max="100">Program</progress></span>
+                &copy; 2023 Blog. All rights reserved.
+            </section>
+        </footer>
+    </main>
+
+</body>
+
+</html>

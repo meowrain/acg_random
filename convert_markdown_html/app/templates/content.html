@@ -1,0 +1,67 @@
+<!--
+ * @Author: meowrain meowrain@126.com
+ * @Date: 2023-11-05 23:16:23
+ * @LastEditors: meowrain meowrain@126.com
+ * @LastEditTime: 2023-11-06 00:15:24
+ * @FilePath: \acg_random\convert_markdown_html\app\templates\content.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Blog Posts</title>
+    <!-- <link rel="stylesheet" href="./styles/pico.min.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.10/css/pico.min.css">
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const url = urlParams.get('url');
+        function loadContent(url) {
+            let title = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.html'));
+            document.title = title;
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    var contentDiv = document.getElementById("content");
+                    contentDiv.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        window.onload(loadContent(url))
+
+    </script>
+</head>
+
+<body>
+
+    <main class="container">
+        <header>
+            <nav>
+                <ul>
+                    <li><strong>Blog With Python✨ Posts</strong></li>
+                </ul>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#">Link</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <article id="content">
+            
+        </article>
+
+        <br>
+        <footer>
+            <section>
+                <span> <progress value="100" max="100">Program</progress></span>
+                &copy; 2023 Blog. All rights reserved.
+            </section>
+        </footer>
+    </main>
+
+</body>
+
+</html>

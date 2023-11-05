@@ -13,6 +13,10 @@ python-multipart = "*"
 aiofiles = "*"
 uuid = "*"
 python-dotenv = "*"
+markdown = "*"
+mistletoe = "*"
+pygments = "*"
+jinja2 = "*"
 
 [dev-packages]
 

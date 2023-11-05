@@ -1,0 +1,154 @@
+<h1>ArrayList实现</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #008000; font-weight: bold">import</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF; font-weight: bold">java.util.NoSuchElementException</span>;
+
+<span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">MyArrayList</span><span style="color: #666666">&lt;</span>E<span style="color: #666666">&gt;</span><span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 存储数据得数组</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span>E<span style="color: #666666">[]</span><span style="color: #bbbbbb"> </span>data;
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 记录数组中元素得个数</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>size;
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 设置初始容量</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">static</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">final</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>CAPACITY<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #666666">10</span>;
+
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">MyArrayList</span>()<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">this</span>.<span style="color: #687822">data</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>(E<span style="color: #666666">[]</span>)<span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>Object<span style="color: #666666">[</span>CAPACITY<span style="color: #666666">]</span>;
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">this</span>.<span style="color: #687822">size</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #666666">0</span>;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">MyArrayList</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>initCapacity)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">this</span>.<span style="color: #687822">data</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>(E<span style="color: #666666">[]</span>)<span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>Object<span style="color: #666666">[</span>initCapacity<span style="color: #666666">]</span>;
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">this</span>.<span style="color: #687822">size</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #666666">0</span>;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* 增 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">void</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">addLast</span>(E<span style="color: #bbbbbb"> </span>e)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">if</span><span style="color: #bbbbbb"> </span>(data.<span style="color: #687822">length</span><span style="color: #bbbbbb"> </span><span style="color: #666666">==</span><span style="color: #bbbbbb"> </span>size)<span style="color: #bbbbbb"> </span>{<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 大小不够就扩容</span>
+<span style="color: #bbbbbb">            </span>resize(data.<span style="color: #687822">length</span><span style="color: #bbbbbb"> </span><span style="color: #666666">*</span><span style="color: #bbbbbb"> </span><span style="color: #666666">2</span>);
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span>data<span style="color: #666666">[</span>size<span style="color: #666666">]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>e;
+<span style="color: #bbbbbb">        </span>size<span style="color: #666666">++</span>;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 在index索引位置添加一个元素element</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">void</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">add</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index,<span style="color: #bbbbbb"> </span>E<span style="color: #bbbbbb"> </span>element)<span style="color: #bbbbbb"> </span>{<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 大小不够就扩容</span>
+<span style="color: #bbbbbb">        </span>checkPositionIndex(index);<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 检查index索引位置是否可以添加元素</span>
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">if</span><span style="color: #bbbbbb"> </span>(data.<span style="color: #687822">length</span><span style="color: #bbbbbb"> </span><span style="color: #666666">==</span><span style="color: #bbbbbb"> </span>size)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">            </span>resize(data.<span style="color: #687822">length</span><span style="color: #bbbbbb"> </span><span style="color: #666666">*</span><span style="color: #bbbbbb"> </span><span style="color: #666666">2</span>);
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">for</span><span style="color: #bbbbbb"> </span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>size;<span style="color: #bbbbbb"> </span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">&lt;</span><span style="color: #bbbbbb"> </span>index;<span style="color: #bbbbbb"> </span>i<span style="color: #666666">--</span>)<span style="color: #bbbbbb"> </span>{<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 先移动位置</span>
+<span style="color: #bbbbbb">            </span>data<span style="color: #666666">[</span>i<span style="color: #666666">]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>data<span style="color: #666666">[</span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">-</span><span style="color: #bbbbbb"> </span><span style="color: #666666">1]</span>;
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span>data<span style="color: #666666">[</span>index<span style="color: #666666">]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>element;
+<span style="color: #bbbbbb">        </span>size<span style="color: #666666">++</span>;
+
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* 删除 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 移除数组中最后一个元素并返回</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span>E<span style="color: #bbbbbb"> </span><span style="color: #0000FF">removeLast</span>()<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">if</span><span style="color: #bbbbbb"> </span>(isEmpty())<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">            </span><span style="color: #008000; font-weight: bold">throw</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>NoSuchElementException();
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">if</span><span style="color: #bbbbbb"> </span>(size<span style="color: #bbbbbb"> </span><span style="color: #666666">&lt;</span><span style="color: #bbbbbb"> </span>data.<span style="color: #687822">length</span><span style="color: #bbbbbb"> </span><span style="color: #666666">/</span><span style="color: #bbbbbb"> </span><span style="color: #666666">4</span>)<span style="color: #bbbbbb"> </span>{<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 如果数组元素个数小于了数组的四分之一，那么就缩容，防止占用太多内存</span>
+<span style="color: #bbbbbb">            </span>resize(data.<span style="color: #687822">length</span><span style="color: #bbbbbb"> </span><span style="color: #666666">/</span><span style="color: #bbbbbb"> </span><span style="color: #666666">2</span>);
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span>E<span style="color: #bbbbbb"> </span>temp<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>data<span style="color: #666666">[</span>size<span style="color: #bbbbbb"> </span><span style="color: #666666">-</span><span style="color: #bbbbbb"> </span><span style="color: #666666">1]</span>;<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 存储要被删除的元素，以供后面返回</span>
+<span style="color: #bbbbbb">        </span>data<span style="color: #666666">[</span>size<span style="color: #bbbbbb"> </span><span style="color: #666666">-</span><span style="color: #bbbbbb"> </span><span style="color: #666666">1]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">null</span>;<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 必须置空，才能让GC回收</span>
+<span style="color: #bbbbbb">        </span>size<span style="color: #666666">--</span>;
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>temp;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 删除index对应的元素并返回</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span>E<span style="color: #bbbbbb"> </span><span style="color: #0000FF">remove</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span>checkElementIndex(index);
+<span style="color: #bbbbbb">        </span>E<span style="color: #bbbbbb"> </span>temp<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>data<span style="color: #666666">[</span>index<span style="color: #666666">]</span>;
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">for</span><span style="color: #bbbbbb"> </span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>index;<span style="color: #bbbbbb"> </span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">&lt;</span><span style="color: #bbbbbb"> </span>size;<span style="color: #bbbbbb"> </span>i<span style="color: #666666">++</span>)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">            </span>data<span style="color: #666666">[</span>i<span style="color: #666666">]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>data<span style="color: #666666">[</span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span><span style="color: #666666">1]</span>;
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span>size<span style="color: #666666">--</span>;
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>temp;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* 改 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 把索引为index的元素改为element并返回原来的元素</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span>E<span style="color: #bbbbbb"> </span><span style="color: #0000FF">set</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index,<span style="color: #bbbbbb"> </span>E<span style="color: #bbbbbb"> </span>element)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span>checkElementIndex(index);
+<span style="color: #bbbbbb">        </span>E<span style="color: #bbbbbb"> </span>temp<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>data<span style="color: #666666">[</span>index<span style="color: #666666">]</span>;<span style="color: #bbbbbb"> </span><span style="color: #3D7B7B; font-style: italic">// 存储没改的时候的元素，以供后面返回</span>
+<span style="color: #bbbbbb">        </span>data<span style="color: #666666">[</span>index<span style="color: #666666">]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>element;
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>temp;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* 查 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 返回索引位置index的元素</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span>E<span style="color: #bbbbbb"> </span><span style="color: #0000FF">get</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span>checkElementIndex(index);
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>data<span style="color: #666666">[</span>index<span style="color: #666666">]</span>;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* 主要函数 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">size</span>()<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>size;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">boolean</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">isEmpty</span>()<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>size<span style="color: #bbbbbb"> </span><span style="color: #666666">==</span><span style="color: #bbbbbb"> </span><span style="color: #666666">0</span>;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* 私有函数 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">boolean</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">isElementIndex</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>index<span style="color: #bbbbbb"> </span><span style="color: #666666">&gt;=</span><span style="color: #bbbbbb"> </span><span style="color: #666666">0</span><span style="color: #bbbbbb"> </span><span style="color: #666666">&amp;&amp;</span><span style="color: #bbbbbb"> </span>index<span style="color: #bbbbbb"> </span><span style="color: #666666">&lt;</span><span style="color: #bbbbbb"> </span>size;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">boolean</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">isPositionIndex</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>index<span style="color: #bbbbbb"> </span><span style="color: #666666">&gt;=</span><span style="color: #bbbbbb"> </span><span style="color: #666666">0</span><span style="color: #bbbbbb"> </span><span style="color: #666666">&amp;&amp;</span><span style="color: #bbbbbb"> </span>index<span style="color: #bbbbbb"> </span><span style="color: #666666">&lt;=</span><span style="color: #bbbbbb"> </span>size;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 检查index索引位置是否可以存在元素</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">void</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">checkElementIndex</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">if</span><span style="color: #bbbbbb"> </span>(<span style="color: #666666">!</span>isElementIndex(index))<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">            </span><span style="color: #008000; font-weight: bold">throw</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>IndexOutOfBoundsException(<span style="color: #BA2121">&quot;Index: &quot;</span><span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span>index<span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span><span style="color: #BA2121">&quot;, Size: &quot;</span><span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span>size);
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 检查index索引位置是否可以添加元素</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">void</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">checkPositionIndex</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>index)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">if</span><span style="color: #bbbbbb"> </span>(<span style="color: #666666">!</span>isPositionIndex(index))<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">            </span><span style="color: #008000; font-weight: bold">throw</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>IndexOutOfBoundsException(<span style="color: #BA2121">&quot;Index: &quot;</span><span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span>index<span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span><span style="color: #BA2121">&quot;, Size: &quot;</span><span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span>size);
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">// 把数组大小扩容或者缩容为newCap</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">private</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">void</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">resize</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>newCap)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span>E<span style="color: #666666">[]</span><span style="color: #bbbbbb"> </span>temp<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>(E<span style="color: #666666">[]</span>)<span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>Object<span style="color: #666666">[</span>newCap<span style="color: #666666">]</span>;
+<span style="color: #bbbbbb">        </span><span style="color: #3D7B7B; font-style: italic">// copy数据</span>
+<span style="color: #bbbbbb">        </span>System.<span style="color: #687822">arraycopy</span>(data,<span style="color: #bbbbbb"> </span><span style="color: #666666">0</span>,<span style="color: #bbbbbb"> </span>temp,<span style="color: #bbbbbb"> </span><span style="color: #666666">0</span>,<span style="color: #bbbbbb"> </span>size);
+<span style="color: #bbbbbb">        </span>data<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span>temp;
+<span style="color: #bbbbbb">    </span>}
+
+<span style="color: #bbbbbb">    </span><span style="color: #3D7B7B; font-style: italic">/* toString方法 */</span>
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span>String<span style="color: #bbbbbb"> </span><span style="color: #0000FF">toString</span>()<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span>StringBuilder<span style="color: #bbbbbb"> </span>builder<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>StringBuilder();
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span><span style="color: #bbbbbb"> </span>i<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #666666">0</span>;i<span style="color: #bbbbbb"> </span><span style="color: #666666">&lt;</span><span style="color: #bbbbbb"> </span>size;i<span style="color: #666666">++</span>)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">            </span>builder.<span style="color: #687822">append</span>(data<span style="color: #666666">[</span>i<span style="color: #666666">]</span><span style="color: #bbbbbb"> </span><span style="color: #666666">+</span><span style="color: #bbbbbb"> </span><span style="color: #BA2121">&quot; &quot;</span>);
+<span style="color: #bbbbbb">        </span>}
+<span style="color: #bbbbbb">        </span><span style="color: #008000; font-weight: bold">return</span><span style="color: #bbbbbb"> </span>builder.<span style="color: #687822">toString</span>();
+<span style="color: #bbbbbb">    </span>}
+
+}
+</pre></div>
+
+<hr />
+<p>测试Main类</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">class</span> <span style="color: #0000FF; font-weight: bold">Main</span><span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">    </span><span style="color: #008000; font-weight: bold">public</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">static</span><span style="color: #bbbbbb"> </span><span style="color: #B00040">void</span><span style="color: #bbbbbb"> </span><span style="color: #0000FF">main</span>(String<span style="color: #666666">[]</span><span style="color: #bbbbbb"> </span>args)<span style="color: #bbbbbb"> </span>{
+<span style="color: #bbbbbb">        </span>MyArrayList<span style="color: #666666">&lt;</span>Integer<span style="color: #666666">&gt;</span><span style="color: #bbbbbb"> </span>list<span style="color: #bbbbbb"> </span><span style="color: #666666">=</span><span style="color: #bbbbbb"> </span><span style="color: #008000; font-weight: bold">new</span><span style="color: #bbbbbb"> </span>MyArrayList<span style="color: #666666">&lt;</span>Integer<span style="color: #666666">&gt;</span>(<span style="color: #666666">100</span>);
+<span style="color: #bbbbbb">        </span>list.<span style="color: #687822">add</span>(<span style="color: #666666">0</span>,<span style="color: #bbbbbb"> </span><span style="color: #666666">1</span>);
+<span style="color: #bbbbbb">        </span>list.<span style="color: #687822">add</span>(<span style="color: #666666">1</span>,<span style="color: #bbbbbb"> </span><span style="color: #666666">2</span>);
+<span style="color: #bbbbbb">        </span>list.<span style="color: #687822">add</span>(<span style="color: #666666">2</span>,<span style="color: #bbbbbb"> </span><span style="color: #666666">3</span>);
+<span style="color: #bbbbbb">        </span>System.<span style="color: #687822">out</span>.<span style="color: #687822">println</span>(list.<span style="color: #687822">get</span>(<span style="color: #666666">0</span>));
+<span style="color: #bbbbbb">        </span>System.<span style="color: #687822">out</span>.<span style="color: #687822">println</span>(list.<span style="color: #687822">get</span>(<span style="color: #666666">1</span>));
+<span style="color: #bbbbbb">        </span>System.<span style="color: #687822">out</span>.<span style="color: #687822">println</span>(list.<span style="color: #687822">get</span>(<span style="color: #666666">2</span>));
+<span style="color: #bbbbbb">        </span>System.<span style="color: #687822">out</span>.<span style="color: #687822">println</span>(list);
+<span style="color: #bbbbbb">    </span>}
+}
+</pre></div>
+
